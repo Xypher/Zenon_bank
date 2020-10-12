@@ -70,6 +70,9 @@ class FileCreationView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     def form_valid(self, form):
         form.instance.student = self.request.user
         return super().form_valid(form)
+
+    def get_success_url(self):
+        return redirect("/")
     
 
 
