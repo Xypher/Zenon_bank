@@ -157,8 +157,8 @@ LOGIN_URL="/users/login"
 
 #Azure file storage system Options
 
-DEFAULT_FILE_STORAGE = 'zenon_bank.custom_azure.AzureMediaStorage'
-STATICFILES_STORAGE = 'zenon_bank.custom_azure.AzureStaticStorage'
+DEFAULT_FILE_STORAGE = os.environ.get("DEFAULT_FILE_STORAGE")
+STATICFILES_STORAGE = os.environ.get('STATICFILES_STORAGE')
 
 STATIC_LOCATION = "static"
 MEDIA_LOCATION = "media"
