@@ -1,0 +1,143 @@
+<div class="list-group">
+
+
+{% if is_paginated %}
+
+
+<div class="container">
+  
+
+    <ul class="pagination">
+
+        {%  if page_obj.has_previous %}
+
+          <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{page_obj.previous_page_number}}">Previous</a></li>
+        {% endif %}
+
+
+        {% for num in page_obj.paginator.page_range %}
+        
+          {% if num == page_obj.number %}
+               <li class="page-item active"><a class="page-link" href="?page={{num}}">{{num}} of {{page_obj.paginator.num_pages}}</a></li>
+
+              
+          {% elif page_obj.number|add:'-4' <= num and num <= page.obj.number|add:'4' %}
+            <li class="page-item active"><a class="page-link" href="?page={{num}}">{{num}}</a></li>
+            
+
+          {% endif %}
+        
+        
+        
+        {% endfor %}
+
+
+        {% if page_obj.has_next %}
+        
+          <li class="page-item"><a class="page-link" href="?page={{page_obj.next_page_number}}">Next</a></li>
+          <li class="page-item"><a class="page-link" href="?page={{page_obj.paginator.num_pages}}">Last</a></li>
+        
+        {% endif %}
+        
+    </ul>
+        
+    </div>
+
+
+{% endif %}
+
+
+  {% for file in files  %}
+    
+        <div class="list-group-item flex-column align-items-start border border-primary border-top-0 border-bottom-0 border-right-0 shadow mb-2">
+            <div class="d-flex justify-content-between border-bottom">
+
+               
+                <h5 class="mb-2 h5">
+                  
+                  {% if file.extension == "pdf"%}
+                    <i class="far fa-file-pdf pr-2"></i>
+
+                  {% elif file.file_type == "video" %}
+                    <i class="far fa-file-video pr-2"></i>
+
+                  {% elif file.file_type == "audio" %}
+                    <i class="far fa-file-audio pr-2"></i>
+                  
+                  {% elif file.file_type == "image" %}
+                    <i class="far fa-file-image pr-2"></i>
+
+                  {% else %}
+                  <i class="far fa-file pr-2"></i>
+
+                  {% endif %}
+
+
+                  
+                  {{file.filename}} : {{file.file.size|filesizeformat}}</h5>
+                <span class="text-muted" >{{file.upload_date|date:"SHORT_DATE_FORMAT"}}</span>
+              </div>
+
+           
+              <p class="mb-3 mt-2">
+                {{file.description}}
+              </p>
+
+
+            <div class="font-weight-bold">
+                <a>uploaded by {{ file.student.username }}</a>
+                <span class="text-muted" style="float: right">Downloaded: {{ file.download_count }} times</span>
+            </div>
+
+            <div class="btn-group button-group" role="group" aria-label="Basic example">
+              <a href="{% url 'download' file_id=file.pk %}"  class="btn btn-primary waves-effect"><i class="fas fa-download fa-lg  pr-1"
+                  aria-hidden="true"></i> Download</a>
+              <button  data-toggle="collapse" data-target="#embedded_file_{{file.pk}}" class="btn btn-primary waves-effect"><i class="fas fa-caret-down fa-lg pr-1"
+                  aria-hidden="true"></i>View</button>
+              <a href="{{file.get_absolute_url}}" class="btn btn-primary waves-effect"><i class="fas fa-external-link-alt fa-lg pr-1"
+                  aria-hidden="true"></i>New Tab</a>
+            </div>
+
+           
+
+      
+            <div id="embedded_file_{{file.pk}}" class="collapse">
+              
+              <div class="border-top mt-2 mb-2"></div>
+
+              {% if file.file_type == "application" %}
+
+                <div class="embed-responsive embed-responsive-16by9">
+                  <embed class="embed-responsive-item" type="{{file.content_type}}" src="{{file.get_absolute_url}}"></embed>
+                </div>
+
+              {% elif file.file_type == "video" or file.file_type == "audio" %}
+
+                <div class="embed-responsive embed-responsive-16by9">
+                  <video class="embed-responsive-item" controls>
+                    <source src="{{file.get_absolute_url}}" type="{{ file.content_type }}">
+                  </video>
+                </div>
+
+
+              {% elif file.file_type == "image" %}
+                  <img src="{{file.get_absolute_url}}" class="rounded" alt="{{file.name}}">
+
+
+                
+              {% else %}
+                <div class="embed-responsive embed-responsive-16by9">
+                  <embed class="embed-responsive-item" type="text/plain" src="{{file.get_absolute_url}}"></embed>
+                </div>
+
+
+              {% endif %}
+            </div>
+          </div>
+
+
+    
+    {% endfor %}
+
+</div>

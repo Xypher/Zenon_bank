@@ -1,0 +1,126 @@
+{% extends 'frontend/base.html' %}
+ 
+{% load crispy_forms_tags %}
+{% block content %}
+
+
+<style>
+
+    .float-btn{
+
+        position:fixed;
+        bottom:40px;
+        right:40px;
+    }
+
+</style>
+
+
+    
+
+
+    <div class="container-fluid mt-4 p-5" >
+
+        <div class="row mb-4">
+
+            {# profile image #}
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
+                {% load static %}
+
+                <img  src="{{ user.profile.profile_img.url}}" class="img-fluid img-thumbnail " width="300" height="300" alt="profile image">
+            </div>
+
+            <div class="col-lg-4 col-md-4 col-sm-12 col-xs-12" >
+
+                <h3 class="h3">{{user.first_name}} {{user.last_name}}</h3>
+                
+                <h5 class="text-muted h5">{{user.student.department}}</h5>
+
+
+                <div class="border border-top"></div>
+            
+            <div class="container mt-4">
+                <div class="mt-1">
+                    <span class="text-muted">Username:   </span><span class="text-primary font-weight-bold">{{user.username}}</span>
+                </div>
+
+                <div class="mt-1">
+                    <span class="text-muted">Email:     </span><span class="text-primary font-weight-bold">{{user.email}}</span>
+                </div>
+                
+                <div class="mt-1">
+                    <span class="text-muted">Phone number:  </span><span class="text-primary font-weight-bold">{{user.student.phone_number}}</span>
+                </div>
+
+                <div class="mt-1">
+                    <span class="text-muted">Gender:    </span><span class="text-primary font-weight-bold">{{user.student.gender}}</span>
+                </div>
+
+            </div>
+
+
+
+        
+            </div>
+        
+
+        </div>
+
+        <div class="border-top p-4" ></div>
+
+        <div class="row">
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+                <ul class="nav nav-pills mb-3" id="pills-tab" role="tablist">
+                    <li class="nav-item">
+                    <a class="nav-link active" id="pills-accepted-tab" data-toggle="pill" href="#pills-accepted" role="tab" aria-controls="pills-accepted" aria-selected="true">Accepted Uploads</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" id="pills-pending-tab" data-toggle="pill" href="#pills-pending" role="tab" aria-controls="pills-pending" aria-selected="false">Pending Uploads</a>
+                    </li>
+                    <li class="nav-item">
+                    <a class="nav-link" id="pills-rejected-tab" data-toggle="pill" href="#pills-rejected" role="tab" aria-controls="pills-rejected" aria-selected="false">Rejected Uploads</a>
+                    </li>
+                </ul>
+            
+                <div class="tab-content p-1" id="pills-tabContent">
+                    <div class="tab-pane fade show active" id="pills-accepted" role="tabpanel" aria-labelledby="pills-accepted-tab">
+                        {% include 'frontend/list.html' with files=accepted_files %}
+                    </div>
+
+                    <div class="tab-pane fade" id="pills-pending" role="tabpanel" aria-labelledby="pills-pending-tab">
+                        {% include 'frontend/list.html' with files=pending_files %}
+                    </div>
+                    <div class="tab-pane fade" id="pills-rejected" role="tabpanel" aria-labelledby="pills-rejected-tab">
+                        {% include 'frontend/list.html' with files=denied_files %}
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
+
+                <h4 class="h4">Edit Info</h4>
+
+                <form method="POST" enctype="multipart/form-data">
+                    {%csrf_token%}
+                
+                    <fieldset>
+                      {{ u_form|crispy }} {{ s_form|crispy }} {{p_form}}
+                    </fieldset>
+
+
+                
+                    <button class="btn btn-primary" type="submit">Submit</button>
+                </form>
+
+            </div>
+            
+        </div>
+
+
+    </div>
+
+
+    <a href="{% url 'upload' %}" class="btn btn-primary btn-rounded float-btn "><i class="fas fa-plus fa-lg pr-3 "></i>upload</a>
+    
+
+{% endblock content %}

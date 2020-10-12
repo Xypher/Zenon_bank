@@ -1,0 +1,93 @@
+
+<script type='text/javascript'>
+
+
+      function decompress_string(name, url){
+
+            url +=  name + "/"
+            let val = "<li>" +
+             "<a  id='treeview_leaf_" + name + "' href='" + url + "'>" + "<div class='treeview-animated-element'><i class='fas fa-folder-open ic-w mr-1'></i>" + name  + "</a>" + 
+            "</li>"
+
+            return val;
+      }
+
+      function decompress_list(name, obj, url){
+          url +=  name + "/"
+
+          let val = "<li class='treeview-animated-items'>" +
+                  "<a  id='treeview_dropdown_" + name + "' class='closed'>" +
+                    "<i class='fas fa-angle-right'></i>" +
+                    "<span><i class='far fa-folder-open ic-w mx-1'></i>" + name +"</span>" +
+                  "</a>"+
+                  "<ul class='nested'>";
+
+                
+          for(cat in obj){
+
+            if(typeof obj[cat] == "string")
+              val += decompress_string(cat, url);
+
+            else if(typeof obj[cat] == "object")
+              val += decompress_list(cat, obj[cat], url)
+          }
+
+          val += "</ul></li>"
+          return val
+      }
+
+
+
+      fetch("/files/get_catagories/")
+      .then(res => res.json())
+      .then( catagories => {
+
+          let tree_view = document.getElementById("tree_view");
+
+          let view = "<div class='treeview-animated ml-2 mr-2'>" +
+                "<h6 class='pt-3 pl-3'>Catagories</h6>" +
+                "<hr>";   
+
+
+          view += "<ul class='treeview-animated-list mb-3'>"
+          let initial_url = "/files/catagories/"
+          
+          for(label in catagories) {  
+
+              let inner = catagories[label]
+
+              view += decompress_list(label, inner, initial_url)
+             
+
+          }    
+
+          view += "</ul></div>"
+
+          tree_view.innerHTML = view 
+
+        $(document).ready(function () {
+          $(".treeview-animated").mdbTreeview();
+          
+          {% if catagory1 %}
+            $('#treeview_dropdown_{{catagory1}}').click();
+          {% endif %}
+          
+          {% if catagory2 %}
+            $('#treeview_dropdown_{{catagory2}}').click();
+          {% endif %}
+          
+          
+        });
+      })
+
+
+</script>
+
+
+
+
+
+
+
+
+

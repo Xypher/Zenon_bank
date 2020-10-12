@@ -1,0 +1,18 @@
+{% extends 'frontend/base.html' %} {% block content %} 
+
+{% load crispy_forms_tags %}
+
+<div class="container mt-4">
+  <form method="POST" enctype="multipart/form-data">
+    {%csrf_token%}
+
+    <fieldset>
+      <legend>Login</legend>
+      {{ form|crispy }}
+    </fieldset>
+
+    <button class="btn btn-primary" type="submit">Upload</button>
+  </form>
+</div>
+
+{% endblock content %}

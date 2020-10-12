@@ -1,0 +1,178 @@
+<nav class="navbar navbar-expand-md navbar-dark primary-color">
+  <a class="navbar-brand" href="{% url 'home' %}" >LOGO</a>
+
+  <button
+    class="navbar-toggler"
+    type="button"
+    data-toggle="collapse"
+    data-target="#navBarEssentials"
+    aria-controls="navbarNav"
+    aria-expanded="false"
+    aria-label="Toggle navigation"
+  >
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div
+    class="collapse navbar-collapse justify-content-end"
+    id="navBarEssentials"
+  >
+    <ul class="navbar-nav font-weight-bold">
+
+      {% if user.is_authenticated %}
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'upload' %}">Upload File</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+        </li>
+
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'profile' %}"><i class="fas fa-user-circle fa-lg"></i></a>
+        </li>
+
+      {% else %}
+           <li class="nav-item">
+          <a class="nav-link" href="{% url 'login' %}">
+            Login <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'signup' %}">Sign Up</a>
+        </li>
+
+
+      {% endif %}
+
+    
+    </ul>
+  </div>
+</nav>
+
+<div
+  id="catagories_navbar"
+  class="navbar navbar-expand-lg navbar-dark bg-dark text-light sticky-top "
+  role="navigation"
+>
+  <div class="container">
+    <button
+      class="navbar-toggler"
+      type="button"
+      data-toggle="collapse"
+      data-target="#catagories_collapse"
+      aria-controls="navbarNav"
+      aria-expanded="false"
+      aria-label="Toggle navigation"
+    >
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="catagories_collapse" >
+
+
+
+        <ul class="navbar-nav mr-auto" id="catagories_collapse_list">
+        
+      
+        </ul>
+
+        <form class="form-inline">
+          <div class="md-form my-0">
+            <input id="search_input" class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+            <button class="btn btn-outline-white btn-md my-2 my-sm-0 ml-3" type="button" id="search_btn">Search</button>
+          </div>
+        </form>
+
+    </div>
+  </div>
+
+  <script type="text/javascript">
+  
+
+
+      function decompress_list_nav(name, obj, url){
+          url +=  name + "/"
+          let id = name;
+          let val = "<li class='nav-item dropdown'>" +
+            "<a class='nav-link dropdown-toggle' id='" + id + "' data-toggle='dropdown'" +
+              "aria-haspopup='true' aria-expanded='false'>" + name +
+            "</a>" +
+            "<div class='dropdown-menu dropdown-default' aria-labelledby='" + id + "'>";
+
+                
+          for(cat in obj)
+            val += "<a href='" + url + cat + "/" + "' class='dropdown-item'>" + cat + "</a>";
+
+          
+
+          val +=   "</div>" + "</li>" 
+
+          return val
+      }
+
+
+
+      fetch("/files/get_catagories/")
+      .then(res => res.json())
+      .then( catagories => {
+
+          let catagories_view = document.getElementById("catagories_collapse_list");
+
+          let view = ""
+          let initial_url = "/files/catagories/"
+          
+          
+          for(label in catagories) {  
+
+              let inner = catagories[label]
+              view += decompress_list_nav(label, inner, initial_url)
+          }    
+
+          catagories_view.innerHTML = view 
+          
+          function search(){
+
+                let search_data =  document.getElementById("search_input").value;
+                
+                if(search_data.length == 0)
+                  return
+
+                window.location.replace("http://localhost:8000/files/search/" + search_data + '/')
+                console.log("you searched")
+          }
+
+
+
+          // sets up search bar onclick functionalities
+          document.getElementById("search_btn").onclick = search;
+
+          document.getElementById("search_input").addEventListener("keydown", event => {
+
+            if (event.keyCode === 13)
+              event.preventDefault();
+          });
+
+          document.getElementById("search_input").addEventListener("keyup", event => {
+
+            if (event.keyCode === 13){
+              event.preventDefault();
+              document.getElementById("search_btn").click();
+            }
+          });
+
+          
+
+      })
+
+
+      
+
+
+  
+  </script>
+
+
+</div>
+
+
