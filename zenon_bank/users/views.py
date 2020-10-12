@@ -61,7 +61,7 @@ def signup(request):
                 email.send()
                     
                 #TODO: replace with proper redirect once finished
-                messages.success(request, "an email has been sent")
+                messages.success(request, f"A vertification email has been sent to {to_email}\n vertify your email address to qualify for login")
                 return redirect("signup")
                 
 
