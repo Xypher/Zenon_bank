@@ -20,12 +20,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/3.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '7(%p_7q)%5n#b25aj1m^471bx%djmv=o72^#+hf-i1ylff$p#9'
+SECRET_KEY = os.environ.get("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["zenonnewbank.herokuapp.com"]
 
 
 # Application definition
@@ -135,12 +135,12 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 
 
 # Email_System_setup
-EMAIL_USE_TLS = bool(os.environ['EMAIL_USE_TLS'])
-EMAIL_HOST = os.environ["EMAIL_HOST"]
+EMAIL_USE_TLS = bool(os.environ.get('EMAIL_USE_TLS'))
+EMAIL_HOST = os.environ.get("EMAIL_HOST")
 
-EMAIL_HOST_USER = os.environ["EMAIL_HOST_USER"]
-EMAIL_HOST_PASSWORD = os.environ["EMAIL_HOST_PASSWORD"]
-EMAIL_PORT = os.environ["EMAIL_PORT"]  
+EMAIL_HOST_USER = os.environ.get("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = os.environ.get("EMAIL_HOST_PASSWORD")
+EMAIL_PORT = os.environ.get("EMAIL_PORT")  
 EMAIL_USE_SSL = False
 
 
@@ -161,8 +161,8 @@ STATICFILES_STORAGE = 'zenon_bank.custom_azure.AzureStaticStorage'
 STATIC_LOCATION = "static"
 MEDIA_LOCATION = "media"
 
-AZURE_ACCOUNT_NAME = os.environ["AZURE_ACCOUNT_NAME"]
-AZURE_ACCOUNT_KEY = os.environ['RuLfiCPL7Pi4RDgCcvzSUr7e1hzi2I1BsIlva14fCh4PDZjT8+GjFwHvVhMI8bVDqLjVKI5nru6ODNivVV2N/A=='] 
+AZURE_ACCOUNT_NAME = os.environ.get("AZURE_ACCOUNT_NAME")
+AZURE_ACCOUNT_KEY = os.environ.get("AZURE_ACCOUNT_KEY")
 AZURE_CUSTOM_DOMAIN = f'{AZURE_ACCOUNT_NAME}.blob.core.windows.net'
 STATIC_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{STATIC_LOCATION}/'
 MEDIA_URL = f'https://{AZURE_CUSTOM_DOMAIN}/{MEDIA_LOCATION}/'
