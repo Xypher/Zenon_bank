@@ -8,7 +8,7 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.template.loader import render_to_string
 from .tokens import account_activation_token
 from django.contrib.auth.models import User
-from django.core.mail import EmailMessage
+from django.core.mail import send_mail
 from django.conf import settings
 from .models import Student
 from django.contrib import messages
@@ -51,14 +51,7 @@ def signup(request):
 
                     
                 to_email = u_form.cleaned_data.get("email")
-                email = EmailMessage(
-                    subject=mail_subject,
-                    body=messege,
-                    from_email="zenon.new.bank@gmail.com",
-                    to=[to_email],
-                )
-
-                email.send()
+                send_mail(mail_subject, messege, "zenon.new.bank@gmail.com", [to_email])
                     
                 #TODO: replace with proper redirect once finished
                 messages.success(request, f"A vertification email has been sent to {to_email}\n vertify your email address to qualify for login")
