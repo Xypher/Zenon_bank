@@ -54,7 +54,7 @@ def signup(request):
                 email = EmailMessage(
                     subject=mail_subject,
                     body=messege,
-                    from_email=settings.EMAIL_HOST_USER,
+                    from_email="zenon.new.bank@gmail.com",
                     to=[to_email],
                 )
 
