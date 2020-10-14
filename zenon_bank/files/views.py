@@ -210,7 +210,7 @@ def download_file(request, file_id):
         resp = StreamingHttpResponse(streaming_content=r)
         resp['Content-Disposition'] = f'attachment; filename={quote(obj.filename())}'
 
-        obj.donwload_count += 1
+        obj.download_count += 1
         obj.save()
 
         return resp
