@@ -173,7 +173,8 @@ class FileSearchListView(ListView):
             Q(catagory2__icontains=self.kwargs["search_data"]) | 
             Q(catagory3__icontains=self.kwargs["search_data"]) | 
             Q(name__icontains=self.kwargs["search_data"]) | 
-            Q(description__icontains=self.kwargs["search_data"] ))
+            Q(description__icontains=self.kwargs["search_data"] |
+            Q(file__icontains=self.kwargs["search_data"])))
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
