@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import CreateView, ListView
 from .models import File
@@ -58,7 +58,7 @@ catagories = {
 
 
 
-class FileCreationView( LoginRequiredMixin, CreateView):
+class FileCreationView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
     model = File
     fields= ['name', 'file', 'login_required_to_view', 'description']
     template_name = "files/upload.html"
@@ -69,10 +69,10 @@ class FileCreationView( LoginRequiredMixin, CreateView):
     #current logged in user to the file before submiting
     def form_valid(self, form):
         form.instance.student = self.request.user
-        return super(CreateView, self).form_valid(form)
+        return super().form_valid(form)
 
     def get_success_url(self):
-        return redirect("/")
+        return f"{reverse('home')}"
     
 
 
