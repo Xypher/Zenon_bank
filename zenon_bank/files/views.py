@@ -58,7 +58,7 @@ catagories = {
 
 
 
-class FileCreationView(SuccessMessageMixin, LoginRequiredMixin, CreateView):
+class FileCreationView( LoginRequiredMixin, CreateView):
     model = File
     fields= ['name', 'file', 'login_required_to_view', 'description']
     template_name = "files/upload.html"
